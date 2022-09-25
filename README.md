@@ -8,23 +8,23 @@ Two new system calls were implemented:
 - **int lsdel(char \*path, char \*result);**
 - **int rec(char \*path);**
 
-lsdel system call is used to return a list of all the deleted files in a directory.
-path parameter represents the directory chosen to display its deleted files.
-result parameter represents a user buffer allocated in the form of a matrix with 64 rows, and each row contains a DIRSIZ+1 character. This limits the number of files within a directory to 64. The return value is a number of found results, or -1 if the user input a nonexistent directory name. This function forwards a matrix filled with the deleted file names. If the directory contained more than 64 files prior to deletion, all files after the 64th are to be ignored.
-rec system call is used for “best effort” file recovery. We could run into two issues when recovering a file: inode used to describe a file could be used for something else, or a file block could be used for something else. In both cases, we won’t recover the file, we will only signify a fault. 
-path parameter is the name of the file we are trying to recover.
+**lsdel system call** is used to return a list of all the deleted files in a directory.
+**path** parameter represents the directory chosen to display its deleted files.
+**result** parameter represents a user buffer allocated in the form of a matrix with 64 rows, and each row contains a DIRSIZ+1 character. This limits the number of files within a directory to 64. The return value is a number of found results, or -1 if the user input a nonexistent directory name. This function forwards a matrix filled with the deleted file names. If the directory contained more than 64 files prior to deletion, all files after the 64th are to be ignored.
 
+**rec system call** is used for “best effort” file recovery. We could run into two issues when recovering a file: inode used to describe a file could be used for something else, or a file block could be used for something else. In both cases, we won’t recover the file, we will only signify a fault. 
+**path** parameter is the name of the file we are trying to recover.
 The return value can be one of the following:
- (0) – successful file recovery
-(-1) – invalid directory path
-(-2) – file not found in the chosen directory
-(-3) – inode of the file is being used for something else
-(-4) – any of the file blocks are being used for something else
+- (0) \– successful file recovery
+- (-1) \– invalid directory path
+- (-2) \– file not found in the chosen directory
+- (-3) \– inode of the file is being used for something else
+- (-4) \– any of the file blocks are being used for something else
 
-Three user programs needed to be implemented: lsdel, rec and writer.
+Three user programs needed to be implemented: **lsdel**, **rec** and **writer**.
 
-lsdel [path] lists all the deleted files on a given path. Path is optional; if not given, the current directory (.) is implied. Possible issues when running this program are that the invalid path is given or that there are no deleted files in the given directory.
+**lsdel [path]** lists all the deleted files on a given path. Path is optional; if not given, the current directory (.) is implied. Possible issues when running this program are that the invalid path is given or that there are no deleted files in the given directory.
 
-rec path tries to execute the recovery of the chosen file, and signifies a fault if it fails to do so. The given path is the name of the file that needs to be recovered. Possible issues when running this program are that the parameter is not given in the command line, invalid parent directory for the given file, nonexistent deleted file with the same name, inode of the file is used for something else or the file blocks are used for something else.
+**rec path** tries to execute the recovery of the chosen file, and signifies a fault if it fails to do so. The given path is the name of the file that needs to be recovered. Possible issues when running this program are that the parameter is not given in the command line, invalid parent directory for the given file, nonexistent deleted file with the same name, inode of the file is used for something else or the file blocks are used for something else.
 
-writer program takes the name of the file that needs to be created as an argument, and fills it with a fixed text of a given size. First block of the file are letters ‘a’, second block are the letters ‘b’, and so forth, so we can know where we are inside a file when we are writing it.
+**writer** program takes the name of the file that needs to be created as an argument, and fills it with a fixed text of a given size. First block of the file are letters ‘a’, second block are the letters ‘b’, and so forth, so we can know where we are inside a file when we are writing it.
