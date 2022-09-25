@@ -15,11 +15,11 @@ Two new system calls were implemented:
 **rec system call** is used for “best effort” file recovery. We could run into two issues when recovering a file: inode used to describe a file could be used for something else, or a file block could be used for something else. In both cases, we won’t recover the file, we will only signify a fault. 
 **path** parameter is the name of the file we are trying to recover.
 The return value can be one of the following:
-- (0) \– successful file recovery
-- (-1) \– invalid directory path
-- (-2) \– file not found in the chosen directory
-- (-3) \– inode of the file is being used for something else
-- (-4) \– any of the file blocks are being used for something else
+-  (0) – successful file recovery
+- (-1) – invalid directory path
+- (-2) – file not found in the chosen directory
+- (-3) – inode of the file is being used for something else
+- (-4) – any of the file blocks are being used for something else
 
 Three user programs needed to be implemented: **lsdel**, **rec** and **writer**.
 
