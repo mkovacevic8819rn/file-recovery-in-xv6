@@ -5,8 +5,8 @@ The purpose of this project was to edit the xv6 system so it could support the �
 In order to enable the recovery of files, information about the occupied blocks needed to be saved in the **inode structure**, and **a flag for the deleted file** from the directory was added. Since by the default xv6 deletion procedure, the entire file content information is deleted from the inode structure of the deleted file, this needed to be edited so that the inode structure stayed intact, and the only thing that changed was the file type to a 0. This indicates that inode can be used for describing another file in the future. The **dirent structure** needed also to be amended, as by the default procedure the entire dirent item of a file is filled with 0 bytes in order to mark a file as deleted. To enable file recovery, dirent structure needs to be saved. That’s why a char del attribute was added, after the inode number and before the file name. If this item is set to 0, the file is present in the system; if it’s 1, the file is deleted. The file name size has been shortened to 13, instead of the original 14. This change needed to be consistent within the xv6 system, so all items in the directories are now created with the char del set to 0. When using the ls command deleted files are ignored.
 
 Two new system calls were implemented: 
-- **int lsdel(char *path, char *result);**
-- **int rec(char *path);**
+- **int lsdel(char \*path, char \*result);**
+- **int rec(char \*path);**
 
 lsdel system call is used to return a list of all the deleted files in a directory.
 path parameter represents the directory chosen to display its deleted files.
